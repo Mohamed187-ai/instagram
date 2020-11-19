@@ -13,11 +13,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes();
+
 Route::get('/', function () {
-    return view('welcome');
+    if(Auth::check())
+    return redirect('/home');
+    else 
+    return view('Auth/login');
 });
 
-Auth::routes();
+Route::group(['middleware' => ['auth']], function(){
+    Route::get('user/profile', 'UserController@edit');
+    Route::patch('user', 'UserController@update');
+});
 
 Route::get('/home', 'HomeController@index')->name('home');
 
