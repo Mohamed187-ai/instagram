@@ -25,6 +25,15 @@ Route::get('/', function () {
 Route::group(['middleware' => ['auth']], function(){
     Route::get('user/profile', 'UserController@edit');
     Route::patch('user', 'UserController@update');
+
+    // POST URLS
+    Route::resource('post', 'PostController');
+    Route::get('user/posts', 'PostController@userPosts');
+
+    // LIKE URLS
+    Route::resource('like', 'LikeController');
+    // cCOMMENT URLS
+    Route::resource('comment', 'CommentController');
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
