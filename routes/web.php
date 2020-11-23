@@ -34,10 +34,12 @@ Route::group(['middleware' => ['auth']], function(){
     Route::resource('like', 'LikeController');
     // cCOMMENT URLS
     Route::resource('comment', 'CommentController');
+    // USERS URLS
+    Route::resource('users', 'UserController');
+    // FOLLOW URLS
+    Route::resource('follow', 'FollowController');
+    Route::get('user/followers', 'FollowController@index');
+    
 });
-
-Route::get('/home', 'HomeController@index')->name('home');
-
-Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

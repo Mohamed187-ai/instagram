@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Follower;
 
 class UserController extends Controller
 {
@@ -15,6 +16,10 @@ class UserController extends Controller
     public function index()
     {
         //
+        $users=User::whereNotIn('id', auth()->user()->following()->pluck('to_user_id'))->where("id","!=",auth()->user()->id)->get();
+        $requests=Follower::with('to_user')->where(["from_user_id"=>auth()->user()->id,"accepted"=>0])->get();
+        $active_user = "danger";
+        return view('follow_view/users',compact('users','requests','active_user'));
     }
 
     /**
