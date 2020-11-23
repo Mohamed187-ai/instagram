@@ -57,7 +57,7 @@
             <img src="{{asset('images/avatar/'.$user->avatar)}}" alt="" class="col-sm-2 mr-2 rounded" style="margin-right: -3%;width: 50px;height: 50px;">
             <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
                 <div class="d-flex justify-content-between align-items-center w-100">
-                <a href=""><strong class="text-gray-dark">{{$user->name}}</strong></a>
+                <a href="{{url('user/'.$user->id.'/posts')}}"><strong class="text-gray-dark">{{$user->name}}</strong></a>
                 <!-- حذف الصداقة -->
                 <form action="{{action('FollowController@destroy', $follower['id'])}}" method="POST">
                     @csrf

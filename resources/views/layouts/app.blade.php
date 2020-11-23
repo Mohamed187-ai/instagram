@@ -7,7 +7,7 @@
               <h1 class="jumbotron-heading"></h1>
               <p class="lead text-muted">قم بمشاركة جميع صورك وفيديوهاتك أنت وأصدقائك من خلال شبكة انستغرام حسوب</p>
               <p style="direction: rtl;">
-                <a href="#" class="btn btn-secondary my-2">الرئيسية</a>
+                <a href="{{url('home')}}" class="btn btn-{{ isset($active_home) ? $active_home : 'secondary' }} my-2">الرئيسية</a>
                 <a href="{{url('user/followers')}}" class="btn btn-{{ isset($active_followers) ? $active_followers : 'secondary' }} my-2">المتابعين</a>
                 <a href="{{url('users')}}" class="btn btn-{{ isset($active_user) ? $active_user : 'secondary' }} my-2">المستخدمين</a>
                 <a href="{{url('user/posts')}}" class="btn btn-{{ isset($active_profile) ? $active_profile : 'secondary' }} my-2">المنشورات</a>

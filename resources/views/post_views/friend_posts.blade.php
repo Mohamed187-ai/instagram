@@ -5,6 +5,13 @@
 
 <div class="album py-5 bg-light">
     <div class="container">
+    @isset($posts)
+        <center>
+            <h2>
+                الصفحة الشخصية لـ {{$posts[0]->user['first_name']."".$posts[0]->user['last_name']}}
+            </h2>
+        </center>
+    @endisset
       <div class="row">
           @isset($posts)
           @foreach($posts as $post)

@@ -44,6 +44,7 @@
 			}, {
 				name: 'users',
 				source: bloodhound,
+				limit: 10,
 				display: function(data) {
 					return data.name  //Input value to be set when you select a suggestion. 
 				},

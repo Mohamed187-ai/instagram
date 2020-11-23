@@ -13,7 +13,7 @@
             <img src="{{asset('images/avatar/'.$user->avatar)}}" alt="" class="col-sm-2 mr-2 rounded" style="margin-right: -3%;width: 50px;height: 40px;margin-top:  -1%;">
             <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray" >
               <div class="d-flex justify-content-between align-items-center w-100">
-                <strong class="text-gray-dark">{{$user->name}}</strong> 
+                <a href="{{url('user_info/'.$user->id)}}"><strong class="text-gray-dark">{{$user->name}}</strong> </a>
                 <form action="{{url('follow')}}" method="POST">
                   @csrf
                   <input type="hidden" name="user_id" value="{{$user->id}}">

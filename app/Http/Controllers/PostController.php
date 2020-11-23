@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Post;
 use App\Like;
+use App\Follower;
 use App\Comment;
+use App\User;
 
 class PostController extends Controller
 {
@@ -17,14 +19,32 @@ class PostController extends Controller
     public function index()
     {
         //
-
+        $posts = Post::withCount('likes')->whereIn('user_id', auth()->user()->following()->where('accepted', '=', 1)
+                                        ->pluck('to_user_id'))->paginate(9);
+        $active_home = "danger";
+        return view('home', compact('posts','active_home'));
     }
 
     public function userPosts(Request $request)
     {
-        $posts=Post::where(["user_id"=>auth()->user()->id])->get();
+        $posts=Post::where(["user_id"=>auth()->user()->id])->paginate(9);
         $active_profile = "danger";
         return view('post_views/user_posts', compact('posts', 'active_profile'));
+    }
+
+
+    // friend post
+
+    public function userFriendPosts($id)
+    {
+        $is_follower = Follower::where(["from_user_id"=>auth()->user()->id, "to_user_id"=>$id, "accepted"=>1])->get();
+        if(isset($is_follower[0]))
+        {
+            $posts=Post::withCount('likes')->where(["user_id"=>$id])->paginate(9);
+            return view('post_views/friend_posts', compact('posts'));
+        }
+        else
+            return redirect('home');
     }
 
     /**
