@@ -13,11 +13,13 @@
                   <div class="media-body pb-3 mb-0" style="text-align: right;direction:  rtl;" >
                     <p class="card-text" style="text-align: right;direction:  rtl;">{{$post->user['name']}}</p>
                   </div>
+                  @can('delete', $post)
                   <form action="{{action('PostController@destroy', $post['id'])}}" method="post" id="ajax_unlike">
                     @csrf
                     <input name="_method" type="hidden" value="DELETE">
                     <button class="btn btn-sm btn-outline-secondary" >حذف</button>
                   </form>
+                  @endcan
                 </div>
             </div>  
             <img class="card-img-top" src="{{asset('images/'.$post['image_path'])}}" alt="Card image cap">

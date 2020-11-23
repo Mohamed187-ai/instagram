@@ -8,13 +8,13 @@
     @isset($posts)
         <center>
             <h2>
-                الصفحة الشخصية لـ {{$posts[0]->user['first_name']."".$posts[0]->user['last_name']}}
+                الصفحة الشخصية لـ {{$user->first_name . " " . $user->last_name}}
             </h2>
         </center>
     @endisset
       <div class="row">
           @isset($posts)
-          @foreach($posts as $post)
+          @forelse($posts as $post)
         <div class="col-md-4">
           <div class="card mb-4 box-shadow">
             <img class="card-img-top" src="{{ asset('images/'.$post['image_path']) }}" alt="Card image cap" style="height: 250px">
@@ -35,6 +35,8 @@
             </div>
           </div>
         </div>
+        @empty
+        <div class="m-auto mt-5">عذراً هذا المستخدم لم ينشر أي منشور بعد.</div>
         @endforeach
         @endisset
       </div> 

@@ -37,11 +37,12 @@ class PostController extends Controller
 
     public function userFriendPosts($id)
     {
-        $is_follower = Follower::where(["from_user_id"=>auth()->user()->id, "to_user_id"=>$id, "accepted"=>1])->get();
-        if(isset($is_follower[0]))
+        // $is_follower = Follower::where(["from_user_id"=>auth()->user()->id, "to_user_id"=>$id, "accepted"=>1])->get();
+        if(policy(Post::class)->show_friend(auth(), $id))
         {
             $posts=Post::withCount('likes')->where(["user_id"=>$id])->paginate(9);
-            return view('post_views/friend_posts', compact('posts'));
+            $user = User::findOrFail($id);
+            return view('post_views/friend_posts', compact('posts', 'user')); 
         }
         else
             return redirect('home');
@@ -91,10 +92,16 @@ class PostController extends Controller
     {
         //
         $post = Post::with('user')->find($id);
-        $count = Like::where('post_id', $id)->count();
-        $userLike = Like::where(["user_id"=>auth()->user()->id, "post_id"=>$id])->get();
-        $post_comments = Post::with('comments', 'comments.user')->find($id);
-        return view('post_views/view_post', compact('post','count','userLike','post_comments'));
+        $user = auth()->user();
+        if($user->can('show', $post)){
+            $count = Like::where('post_id', $id)->count();
+            $userLike = Like::where(["user_id"=>auth()->user()->id, "post_id"=>$id])->get();
+            $post_comments = Post::with('comments', 'comments.user')->find($id);
+            return view('post_views/view_post', compact('post','count','userLike','post_comments'));
+        }
+        else
+        return redirect('not_found');
+        
     }
 
     /**
@@ -107,7 +114,7 @@ class PostController extends Controller
     {
         //
         $post = Post::find($id);
-        if($post->user_id==auth()->user()->id)
+        if(auth()->user()->can('update', $post))
         return view('post_views/edit_post', compact('post'));
         else
         return redirect('not_found');
@@ -124,7 +131,7 @@ class PostController extends Controller
     {
         //
         $post = Post::find($id);
-        if($post->user_id==auth()->user()->id){
+        if(auth()->user()->can('update', $post)){
             $post->body=$request->get('body');
             $post->save();
             return redirect('post/'.$id);
@@ -144,7 +151,7 @@ class PostController extends Controller
     {
         //
         $post = Post::find($id);
-        if($post->user_id==auth()->user()->id){
+        if(auth()->user()->can('delete', $post)){
             $post->delete();
             return redirect('user/posts');
         }
